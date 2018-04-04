@@ -40,7 +40,7 @@ class PerceptInStream {
   inline ~PerceptInStream();
 
   //begins to grab data from the PerceptIn
-  void PublishData();
+  void PublishData( int exposure = 600 );
 
  private:
   //open the PerceptIn

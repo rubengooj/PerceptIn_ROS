@@ -41,7 +41,7 @@ void PerceptInROS::PublishImu() {
 
     std::cout << msg_imu.timestamp << "    "  
                    << msg_imu.accel[0] <<  "    " << msg_imu.accel[1] <<  "    "  << msg_imu.accel[2] <<  "    " 
-                   << msg_imu.gyros[0] <<  "    " << msg_imu.gyros[1] <<  "    " << msg_imu.gyros[2] << std::endl;
+                   << msg_imu.gyros[0] <<  "    " << msg_imu.gyros[1] <<  "    "  << msg_imu.gyros[2] << std::endl;
     ros::spinOnce();
     ros_rate.sleep();
   } //while
@@ -53,14 +53,18 @@ void PerceptInROS::PublishStereo() {
 
   //defines publishers
   ros::NodeHandle node_handle;
-  ros::Publisher image_left_pub = node_handle.advertise<sensor_msgs::CompressedImage>("image_left", 1);
-  ros::Publisher image_right_pub = node_handle.advertise<sensor_msgs::CompressedImage>("image_right", 1);
+  //ros::Publisher image_left_pub  = node_handle.advertise<sensor_msgs::CompressedImage>("image_left", 1);
+  //ros::Publisher image_right_pub = node_handle.advertise<sensor_msgs::CompressedImage>("image_right", 1);
+  ros::Publisher image_left_cvpub  = node_handle.advertise<sensor_msgs::Image>("image_left", 1);
+  ros::Publisher image_right_cvpub = node_handle.advertise<sensor_msgs::Image>("image_right", 1);
   ros::Rate ros_rate(10000);
 
   //defines message
   std_msgs::Header header;
-  sensor_msgs::CompressedImagePtr image_left_msg;
-  sensor_msgs::CompressedImagePtr image_right_msg;
+  //sensor_msgs::CompressedImagePtr image_left_msg;
+  //sensor_msgs::CompressedImagePtr image_right_msg;
+  sensor_msgs::ImagePtr image_left_msg;
+  sensor_msgs::ImagePtr image_right_msg;
   MsgStereoData msg_stereo;
 
   char *image_data = new char[640*480*2];
@@ -85,10 +89,17 @@ void PerceptInROS::PublishStereo() {
       cv::Mat image_right(480, 640, CV_8UC1, image_data + 640*480);
       header.stamp.sec = static_cast<int>(1e-3 * msg_stereo.timestamp);
       header.stamp.nsec = 1e6 * static_cast<int>(msg_stereo.timestamp - 1e3 * header.stamp.sec);
-      image_left_msg = cv_bridge::CvImage(header, "mono8", image_left).toCompressedImageMsg();
+
+      /*image_left_msg  = cv_bridge::CvImage(header, "mono8", image_left).toCompressedImageMsg();
       image_right_msg = cv_bridge::CvImage(header, "mono8", image_right).toCompressedImageMsg();
       image_left_pub.publish(image_left_msg);
-      image_right_pub.publish(image_right_msg);
+      image_right_pub.publish(image_right_msg);*/
+
+      image_left_msg  = cv_bridge::CvImage(header, "mono8", image_left).toImageMsg();
+      image_right_msg = cv_bridge::CvImage(header, "mono8", image_right).toImageMsg();
+
+      image_left_cvpub.publish(image_left_msg);
+      image_right_cvpub.publish(image_right_msg);
 
       cv::imshow("image_left", image_left);
       cv::imshow("image_right", image_right);

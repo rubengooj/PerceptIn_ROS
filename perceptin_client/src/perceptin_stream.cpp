@@ -9,7 +9,7 @@
 
 namespace lsd_slam {
 
-void PerceptInStream::PublishData() {
+void PerceptInStream::PublishData( int exposure ) {
   if (OpenDevice() < 0)   // opens the device PerceptIn
     return;
 
@@ -18,7 +18,8 @@ void PerceptInStream::PublishData() {
   if (thread_stereo_ == NULL)
     thread_stereo_ = new std::thread(std::mem_fun(&PerceptInStream::PublishStereo), this);
 
-  perceptin_->SetExposure(600);
+  perceptin_->SetExposure(exposure);
+
   std::shared_ptr<const PIRVS::Data> data;
   std::shared_ptr<const PIRVS::ImuData> imu_data;
   std::shared_ptr<const PIRVS::StereoData> stereo_data;
@@ -34,8 +35,10 @@ void PerceptInStream::PublishData() {
     }
 
     stereo_data = std::dynamic_pointer_cast<const PIRVS::StereoData>(data); //publish stereo data
-    if (stereo_data) 
+    if (stereo_data){
       PushStereo(stereo_data);
+      continue;
+    }
   } //while
 }
 

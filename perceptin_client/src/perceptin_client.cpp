@@ -10,9 +10,15 @@
 
 int main(int argc, char** argv) {
   using namespace lsd_slam;
-  
   PerceptInStream perceptin_stream;
-  perceptin_stream.PublishData();
+
+  int exposure;
+  if( argc == 2 ){
+    exposure = std::stoi(argv[1]);
+    perceptin_stream.PublishData(exposure);
+  }
+  else
+    perceptin_stream.PublishData();
 
   return 0;
 }

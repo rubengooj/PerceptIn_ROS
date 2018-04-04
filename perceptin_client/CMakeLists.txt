@@ -1,5 +1,5 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-SET(OpenCV_DIR "/home/yanyan/opencv-3.2.0/build")
+SET(OpenCV_DIR "/home/ruben/libs/opencv/build")
 PROJECT(perceptin_client)
 
 SET(CMAKE_C_FLAGS "-std=c99")

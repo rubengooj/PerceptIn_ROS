@@ -21,6 +21,7 @@ roslaunch perceptin_pynodes PerceptIn.launch
 We developed the perceptin_pynodes package to avoid the execution of the binaries. You need to start a **roscore** and then open two terminals and run:
 
 rosrun perceptin_pynodes Perceptin_Server_node
+
 rosrun perceptin_pynodes Perceptin_Client_node
 
 >Before running the client, you can set the exposition by tiping:

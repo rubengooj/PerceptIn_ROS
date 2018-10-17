@@ -25,6 +25,7 @@ rosrun perceptin_pynodes Perceptin_Server_node
 rosrun perceptin_pynodes Perceptin_Client_node
 
 >Before running the client, you can set the exposition by tiping:
+
 >rosparam set exposition <exposure>  (default exposure: 600)
 
 ### executables:

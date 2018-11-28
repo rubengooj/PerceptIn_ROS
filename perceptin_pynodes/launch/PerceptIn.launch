@@ -1,0 +1,5 @@
+<launch>
+    <param name="exposition" value="600" />
+    <node pkg="perceptin_pynodes" type="Perceptin_Server_node" name="PerceptIn_Server"/>
+    <node pkg="perceptin_pynodes" type="Perceptin_Client_node" name="PerceptIn_Client"/>
+</launch>
